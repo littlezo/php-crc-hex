@@ -1,0 +1,23 @@
+{
+	"name": "littlezo/php-crc16-hex",
+	"description": "php-crc16-hex",
+	"license": "MPL-2.0",
+	"authors": [
+		{
+			"name": "@小小只^v^",
+			"email": "littlezov@qq.com"
+		}
+	],
+	"homepage": "https://github.com/littlezo/php-crc-hex",
+	"keywords": [
+		"crc"
+	],
+	"require": {
+		"php": ">=7.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"littlezov\\crc\\": "src/"
+		}
+	}
+}
