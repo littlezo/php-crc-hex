@@ -1,6 +1,6 @@
 {
 	"name": "littlezo/php-crc-hex",
-	"description": "php-crc16-hex",
+	"description": "php-crc-hex",
 	"license": "MPL-2.0",
 	"authors": [
 		{
@@ -17,7 +17,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"LittleZov\\crc\\": "src/"
+			"littleZov\\crc\\": "src/"
 		}
 	}
 }
