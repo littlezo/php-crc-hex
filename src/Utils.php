@@ -12,7 +12,7 @@ declare(strict_types=1);
  * @license  https://github.com/littlezo/MozillaPublicLicense/blob/main/LICENSE
  *
  */
-namespace littlezov\crc;
+namespace LittleZov\crc;
 
 class Utils
 {
