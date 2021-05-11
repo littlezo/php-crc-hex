@@ -75,142 +75,37 @@ class Utils
         return $result;
     }
 
-    public function reBuild($deviceSNStr, $hexStr)
+    public function hexScreen($hexStr, $is_hex = true)
     {
-        $deviceSNStr = str_replace(' ', '', $deviceSNStr);
-        $hexStr = str_replace(' ', '', $hexStr);
-        $result = null;
-        if (strlen($deviceSNStr) != 16) {
-            throw new \Exception('设备号长度非16位');
-        }
-        $package = null;
-        try {
-            $package = $this->parse($hexStr);   // 格式校验，错误抛出异常
-            $deviceSN = strToHex($deviceSNStr); // 替换设备号
-            $version = $package->getVersion();
-            $connectType = $package->getConnectType();
-            $command = $package->getCommand();
-            $dataLength = $package->getDataLength();
-            $data = $package->getData();
-            $seq = $package->getSeq();
-            $eof = $package->getEof();
-            // 计算crc16
-            $hexStrNew = $deviceSN . $version . $connectType . $command . $dataLength . $data . $seq;
-            $crcResult = $this->crc->calc($hexStrNew);
-            $crcResultCheck = $crcResult[2] . $crcResult[3] . $crcResult[0] . $crcResult[1];
-            $signature = $crcResultCheck; // 新signature
-            $result = $this->build($deviceSN, $version, $connectType, $command, $dataLength, $data, $seq, $signature, $eof);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-        return $result;
-    }
-
-    public function reBuildSeq($seqStr, $hexStr)
-    {
-        $seqStr = str_replace(' ', '', $seqStr);
-        $hexStr = str_replace(' ', '', $hexStr);
-        $result = null;
-        if (strlen($seqStr) != 8) {
-            throw new \Exception('seq长度非8位');
-        }
-        $package = null;
-        try {
-            $package = $this->parse($hexStr);   // 格式校验，错误抛出异常
-            $deviceSN = $package->getDeviceSN();
-            $version = $package->getVersion();
-            $connectType = $package->getConnectType();
-            $command = $package->getCommand();
-            $dataLength = $package->getDataLength();
-            $data = $package->getData();
-            $seq = $seqStr; // 替换设备号
-            $eof = $package->getEof();
-            // 计算crc16
-            $hexStrNew = $deviceSN . $version . $connectType . $command . $dataLength . $data . $seq;
-            $crcResult = $this->crc->calc($hexStrNew);
-            $crcResultCheck = $crcResult[2] . $crcResult[3] . $crcResult[0] . $crcResult[1];
-            $signature = $crcResultCheck; // 新signature
-            $result = $this->build($deviceSN, $version, $connectType, $command, $dataLength, $data, $seq, $signature, $eof);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-        return $result;
-    }
-
-    public function reBuildData($dataStr, $hexStr)
-    {
-        $dataStr = str_replace(' ', '', $dataStr);
-        $hexStr = str_replace(' ', '', $hexStr);
-        $result = null;
-        if (strlen($dataStr) % 2 != 0) {
-            throw new \Exception('data非偶数');
-        }
-        $package = null;
-        try {
-            $package = $this->parse($hexStr);   // 格式校验，错误抛出异常
-            $deviceSN = $package->getDeviceSN();
-            $version = $package->getVersion();
-            $connectType = $package->getConnectType();
-            $command = $package->getCommand();
-            $dataLength = dechex((strlen($dataStr) / 2)); // 替换设备号
-            $dataLength = strlen($dataLength) == 1 ? '0' . $dataLength : $dataLength;
-            $data = $dataStr; // 替换设备号
-            $seq = $package->getSeq();
-            $eof = $package->getEof();
-            // 计算crc16
-            $hexStrNew = $deviceSN . $version . $connectType . $command . $dataLength . $data . $seq;
-            $crcResult = $this->crc->calc($hexStrNew);
-            $crcResultCheck = $crcResult[2] . $crcResult[3] . $crcResult[0] . $crcResult[1];
-            $signature = $crcResultCheck; // 新signature
-            $result = $this->build($deviceSN, $version, $connectType, $command, $dataLength, $data, $seq, $signature, $eof);
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-        return $result;
-    }
-
-    public function hexScreen($hexStr, $type = '1')
-    {
+        // return $this->isHexString($hexStr);
         $str = '';
         $hexStrArr = [];
         for ($i = 0, $j = 1; $i < strlen($hexStr); $i = $i + 2, $j++) {
             $hexStrArr[] = $hexStr[$i] . $hexStr[$i + 1];
-            $str .= '<span class="letter ' . $this->getPackageScreenType($hexStr, $j) . '">' . $hexStr[$i] . $hexStr[$i + 1] . '</span>';
         }
-        return $type == '1' ? implode('&nbsp;&nbsp;', $hexStrArr) : $str;
+        return $is_hex == true ? implode(' ', $hexStrArr) : implode('', $hexStrArr);
     }
 
-    private function getPackageScreenType($hexStr, $pos)
+    public function hexToStr($hex)
     {
-        $class = '';
-        if (strlen($hexStr) >= 40) {
-            $dataLength = substr($hexStr, 38, 2);
-            $dataLengthDec = hexdec($dataLength);
-            if ($pos >= 0 && $pos < 17) {
-                $class = 'sec_1';
-            } elseif ($pos == 17) {
-                $class = 'sec_2'; //1
-            } elseif ($pos == 18) {
-                $class = 'sec_3'; //2
-            } elseif ($pos == 19) {
-                $class = 'sec_4'; //3
-            } elseif ($pos == 20) {
-                $class = 'sec_5'; // 4 dataLength
-            } elseif ($pos > 20 && $pos < (21 + $dataLengthDec)) {
-                $class = 'sec_6';
-            } elseif ($pos > (20 + $dataLengthDec) && $pos < (25 + $dataLengthDec)) {
-                $class = 'sec_7';
-            } elseif ($pos > (24 + $dataLengthDec) && $pos < (27 + $dataLengthDec)) {
-                $class = 'sec_8';
-            } elseif ($pos > (26 + $dataLengthDec) && $pos < (28 + $dataLengthDec)) {
-                $class = 'sec_9';
-            }
+        $str = '';
+        for ($i = 0; $i < strlen($hex) - 1; $i += 2) {
+            $str .= chr(hexdec($hex[$i] . $hex[$i + 1]));
         }
-        return $class;
+        return $str;
     }
 
-    private function build($deviceSN, $version, $connectType, $command, $dataLength, $data, $seq, $signature, $eof)
+    public function strToHex($str)
     {
-        return new Package($deviceSN, $version, $connectType, $command, $dataLength, $data, $seq, $signature, $eof);
+        $hex = '';
+        for ($i = 0; $i < strlen($str); ++$i) {
+            $hex .= dechex(ord($str[$i]));
+        }
+        return $hex;
+    }
+
+    public function isHexString($str)
+    {
+        return ctype_xdigit($str);
     }
 }
