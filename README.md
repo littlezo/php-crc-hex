@@ -6,7 +6,7 @@ This is an implementation of the [CRC RevEng Catalogue](http://reveng.sourceforg
 
 ```PHP
 <?php
-use littlezov\crc\CRC16;
+use littler\CrcHex\CRC16;
 
 require_once ./vendor/autoload.php;
 
