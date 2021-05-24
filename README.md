@@ -1,4 +1,6 @@
 # PHP CRC HEX
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flittlezo%2Fphp-crc-hex.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flittlezo%2Fphp-crc-hex?ref=badge_shield)
+
 
 This is an implementation of the [CRC RevEng Catalogue](http://reveng.sourceforge.net/crc-catalogue/) in PHP 7.x
 
@@ -33,3 +35,7 @@ Not yet
 #### 32bit CRC
 
 Not yet
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flittlezo%2Fphp-crc-hex.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Flittlezo%2Fphp-crc-hex?ref=badge_large)
