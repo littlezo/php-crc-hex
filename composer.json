@@ -1,6 +1,6 @@
 {
-	"name": "littlezo/php-crc-hex",
-	"description": "php-crc-hex",
+	"name": "littler/crc-hex",
+	"description": "php MODBUS CRC Hex",
 	"license": "MPL-2.0",
 	"authors": [
 		{
@@ -17,7 +17,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"littleZov\\crc\\": "src/"
+			"littler\\CrcHex\\": "src/"
 		},
 		"files": [
 			"src/helper.php"

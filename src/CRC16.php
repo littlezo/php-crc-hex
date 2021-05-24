@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Code Ai.
- *
  * @version 1.0.0
  * @author @小小只^v^ <littlezov@qq.com>  littlezov@qq.com
  * @contact  littlezov@qq.com
@@ -12,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/littlezo/MozillaPublicLicense/blob/main/LICENSE
  *
  */
-namespace littleZov\crc;
+namespace littler\CrcHex;
 
 class CRC16
 {
